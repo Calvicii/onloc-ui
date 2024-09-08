@@ -8,7 +8,7 @@ function Location() {
 
   async function getCoords() {
     try {
-      const response = await fetch("http://127.0.0.1:8118/api/location/latest", {
+      const response = await fetch("http://localhost:8118/api/location/latest", {
         method: "GET",
       });
 
