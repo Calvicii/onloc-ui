@@ -10,6 +10,9 @@ function Location() {
     try {
       const response = await fetch("http://localhost:8118/api/location/latest", {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
       });
 
       if (!response.ok) {
