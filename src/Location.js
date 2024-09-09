@@ -1,53 +1,45 @@
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
 import "./Location.css";
+import { colors, Paper } from "@mui/material";
 
-function Location() {
-  const [coords, setCoords] = useState([0, 0]);
-  const [coordsId, setCoordsId] = useState(0);
-
-  async function getCoords() {
-    try {
-      const response = await fetch("http://localhost:8118/api/location/latest", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch coordinates");
-      }
-
-      const data = await response.json();
-      setCoords([data.coords.latitude, data.coords.longitude]);
-      setCoordsId(data.id);
-    } catch (error) {
-      console.error("Error fetching coordinates:", error);
-    }
+function Location({ devices, showAll }) {
+  if (devices[0] === undefined || devices[0] === null) {
+    return null;
   }
 
-  useEffect(() => {
-    // Initial fetch
-    getCoords();
-
-    // Update coordinates every second
-    const intervalId = setInterval(() => {
-      getCoords();
-      console.log("Location updated:", coords);
-    }, 5000);
-
-    // Cleanup interval on unmount
-    return () => clearInterval(intervalId);
-  }, []);
+  if (!showAll && devices.length === 1) {
+    return (
+      <Paper elevation={3} id="location">
+        <MapContainer
+          center={[devices[0].coords.latitude, devices[0].coords.longitude]}
+          zoom={16}
+          style={{ height: "500px", width: "800px", borderRadius: 10 }}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker
+            position={[devices[0].coords.latitude, devices[0].coords.longitude]}
+          >
+            <Popup className="popup">
+              {devices[0].device} ({devices[0].coords.latitude},{" "}
+              {devices[0].coords.longitude})
+            </Popup>
+          </Marker>
+          <MapUpdater
+            coords={[devices[0].coords.latitude, devices[0].coords.longitude]}
+          />
+        </MapContainer>
+      </Paper>
+    );
+  }
 
   return (
-    <>
-      <p>
-        {coordsId}: {coords[0]}, {coords[1]}
-      </p>
+    <Paper elevation={3} id="location">
       <MapContainer
-        center={coords}
+        center={[devices[0].coords.latitude, devices[0].coords.longitude]}
         zoom={16}
         style={{ height: "500px", width: "800px", borderRadius: 10 }}
       >
@@ -55,16 +47,19 @@ function Location() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={coords}>
-          <Popup>{coordsId}</Popup>
-        </Marker>
-        <MapUpdater coords={coords} />
+        {devices.map((device) => (
+          <Marker position={[device.coords.latitude, device.coords.longitude]}>
+            <Popup>
+              {device.device} ({device.coords.latitude},{" "}
+              {device.coords.longitude})
+            </Popup>
+          </Marker>
+        ))}
       </MapContainer>
-    </>
+    </Paper>
   );
 }
 
-// Component to update map center when coordinates change
 function MapUpdater({ coords }) {
   const map = useMap();
   useEffect(() => {

@@ -1,4 +1,45 @@
 #map {
-    height: 400px;
-    width: 600px;
+  height: 400px;
+  width: 600px;
+}
+
+#location {
+  margin-top: 20px;
+  padding: 20px;
+  width: fit-content;
+  border-radius: 10px;
+}
+
+.leaflet-layer,
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+.leaflet-control-attribution {
+  background: #000b !important;
+  color: white;
+  border-radius: 9999px;
+  font-family: Outfit;
+}
+
+.leaflet-popup-content {
+  width: fit-content !important;
+  font-family: Outfit;
+}
+
+.leaflet-popup-content-wrapper {
+  background-color: #333;
+  margin: 0px;
+  color: white;
+}
+
+.leaflet-popup-close-button {
+  background-color: #333 !important;
+  border-radius: 9999px;
+}
+
+.leaflet-popup-close-button:hover {
+  color: white !important;
+  background-color: #444 !important;
 }
