@@ -10,7 +10,7 @@ function Location({ devices, showAll }) {
 
   if (!showAll && devices.length === 1) {
     return (
-      <Paper elevation={3} id="location">
+      <Paper elevation={3} className="location">
         <MapContainer
           center={[devices[0].coords.latitude, devices[0].coords.longitude]}
           zoom={16}
@@ -36,8 +36,35 @@ function Location({ devices, showAll }) {
     );
   }
 
+  if (devices.length > 1 && showAll) {
+    return (
+      <Paper elevation={3} className="location">
+        <MapContainer
+          center={[devices[0].coords.latitude, devices[0].coords.longitude]}
+          zoom={16}
+          style={{ height: "500px", width: "800px", borderRadius: 10 }}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {devices.map((device) => (
+            <Marker
+              position={[device.coords.latitude, device.coords.longitude]}
+            >
+              <Popup>
+                {device.device} ({device.coords.latitude},{" "}
+                {device.coords.longitude})
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      </Paper>
+    );
+  }
+
   return (
-    <Paper elevation={3} id="location">
+    <Paper elevation={3} className="location">
       <MapContainer
         center={[devices[0].coords.latitude, devices[0].coords.longitude]}
         zoom={16}
@@ -47,14 +74,6 @@ function Location({ devices, showAll }) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {devices.map((device) => (
-          <Marker position={[device.coords.latitude, device.coords.longitude]}>
-            <Popup>
-              {device.device} ({device.coords.latitude},{" "}
-              {device.coords.longitude})
-            </Popup>
-          </Marker>
-        ))}
       </MapContainer>
     </Paper>
   );

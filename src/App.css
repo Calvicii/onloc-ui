@@ -4,3 +4,7 @@ body {
   align-items: center;
   height: 100vh;
 }
+
+.appBar {
+  padding-left: 40px;
+}

@@ -3,10 +3,12 @@
   width: 600px;
 }
 
-#location {
+.location {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-top: 20px;
   padding: 20px;
-  width: fit-content;
   border-radius: 10px;
 }
 
