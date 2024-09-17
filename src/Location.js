@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
 import "./Location.css";
+import { convertUnixToISO8601 } from "./utils";
 import { Paper } from "@mui/material";
 
 function Location({ devices, showAll }) {
@@ -24,8 +25,7 @@ function Location({ devices, showAll }) {
             position={[devices[0].coords.latitude, devices[0].coords.longitude]}
           >
             <Popup className="popup">
-              {devices[0].device} ({devices[0].coords.latitude},{" "}
-              {devices[0].coords.longitude})
+              <p>{`${devices[0].device}\n(${devices[0].coords.latitude}, ${devices[0].coords.longitude})\n${convertUnixToISO8601(devices[0].timestamp)}`}</p>
             </Popup>
           </Marker>
           <MapUpdater
@@ -36,7 +36,7 @@ function Location({ devices, showAll }) {
     );
   }
 
-  if (devices.length > 1 && showAll) {
+  if (devices.length >= 1 && showAll) {
     return (
       <Paper elevation={3} className="paper">
         <MapContainer
@@ -54,8 +54,7 @@ function Location({ devices, showAll }) {
               position={[device.coords.latitude, device.coords.longitude]}
             >
               <Popup>
-                {device.device} ({device.coords.latitude},{" "}
-                {device.coords.longitude})
+                <p>{`${device.device}\n(${device.coords.latitude}, ${device.coords.longitude})\n${convertUnixToISO8601(device.timestamp)}`}</p>
               </Popup>
             </Marker>
           ))}

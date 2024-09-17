@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   Paper,
@@ -75,7 +75,11 @@ function Map({ ip }) {
   return (
     <>
       <h2>Map</h2>
-      <Paper elevation={3} className="paper" sx={{ display: "flex", alignItems: "center", width: "60vw" }}>
+      <Paper
+        elevation={3}
+        className="paper"
+        sx={{ display: "flex", alignItems: "center", width: "60vw" }}
+      >
         <DeviceSelector />
         <FormControl>
           <FormControlLabel
