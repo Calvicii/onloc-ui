@@ -5,6 +5,8 @@ body {
   height: 100vh;
 }
 
-.appBar {
-  padding-left: 40px;
+.paper {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 10px;
 }

@@ -1,17 +1,3 @@
-#map {
-  height: 400px;
-  width: 600px;
-}
-
-.paper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-  padding: 20px;
-  border-radius: 10px;
-}
-
 .leaflet-layer,
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {

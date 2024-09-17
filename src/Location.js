@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
 import "./Location.css";
-import { colors, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
 
 function Location({ devices, showAll }) {
   if (devices[0] === undefined || devices[0] === null) {
@@ -14,7 +14,7 @@ function Location({ devices, showAll }) {
         <MapContainer
           center={[devices[0].coords.latitude, devices[0].coords.longitude]}
           zoom={16}
-          style={{ height: "500px", width: "800px", borderRadius: 10 }}
+          style={{ height: "60vh", width: "100%", borderRadius: 10 }}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -42,7 +42,7 @@ function Location({ devices, showAll }) {
         <MapContainer
           center={[devices[0].coords.latitude, devices[0].coords.longitude]}
           zoom={16}
-          style={{ height: "500px", width: "800px", borderRadius: 10 }}
+          style={{ height: "60vh", width: "100%", borderRadius: 10 }}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -69,7 +69,7 @@ function Location({ devices, showAll }) {
       <MapContainer
         center={[devices[0].coords.latitude, devices[0].coords.longitude]}
         zoom={16}
-        style={{ height: "500px", width: "800px", borderRadius: 10 }}
+        style={{ height: "60vh", width: "100%", borderRadius: 10 }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

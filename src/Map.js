@@ -71,7 +71,8 @@ function Map({ ip }) {
 
   return (
     <>
-      <Paper elevation={3} className="paper">
+      <h2>Map</h2>
+      <Paper elevation={3} className="paper" sx={{ display: "flex", alignItems: "center", width: "60vw" }}>
         <DeviceSelector />
         <FormControl>
           <FormControlLabel
