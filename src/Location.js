@@ -10,7 +10,7 @@ function Location({ devices, showAll }) {
 
   if (!showAll && devices.length === 1) {
     return (
-      <Paper elevation={3} className="location">
+      <Paper elevation={3} className="paper">
         <MapContainer
           center={[devices[0].coords.latitude, devices[0].coords.longitude]}
           zoom={16}
@@ -38,7 +38,7 @@ function Location({ devices, showAll }) {
 
   if (devices.length > 1 && showAll) {
     return (
-      <Paper elevation={3} className="location">
+      <Paper elevation={3} className="paper">
         <MapContainer
           center={[devices[0].coords.latitude, devices[0].coords.longitude]}
           zoom={16}
@@ -48,8 +48,9 @@ function Location({ devices, showAll }) {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {devices.map((device) => (
+          {devices.map((device, index) => (
             <Marker
+              key={index}
               position={[device.coords.latitude, device.coords.longitude]}
             >
               <Popup>
@@ -64,7 +65,7 @@ function Location({ devices, showAll }) {
   }
 
   return (
-    <Paper elevation={3} className="location">
+    <Paper elevation={3} className="paper">
       <MapContainer
         center={[devices[0].coords.latitude, devices[0].coords.longitude]}
         zoom={16}

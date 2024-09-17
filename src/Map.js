@@ -2,7 +2,6 @@ import "./App.css";
 import Location from "./Location";
 import { useState, useEffect } from "react";
 import {
-  TextField,
   Paper,
   Select,
   MenuItem,
@@ -10,13 +9,11 @@ import {
   FormControl,
   Switch,
   FormControlLabel,
-  Container,
 } from "@mui/material";
 import { getKnownDevices, getLocations, getLocation } from "./Storage";
 
-function Map() {
-  const [ip, setIp] = useState("http://localhost:8118");
-  const [deviceName, setDeviceName] = useState(null);
+function Map({ ip }) {
+  const [deviceName, setDeviceName] = useState("");
   const [knownDevices, setKnownDevices] = useState([]);
   const [devices, setDevices] = useState([]);
   const [showAll, setShowAll] = useState(true);
@@ -25,7 +22,7 @@ function Map() {
     let intervalId;
 
     async function fetchData() {
-      if (deviceName === null || showAll) {
+      if (deviceName === "" || showAll) {
         setDevices(await getLocations(ip));
         setKnownDevices(await getKnownDevices(ip));
 
@@ -74,26 +71,17 @@ function Map() {
 
   return (
     <>
-      <Container>
-        <Paper elevation={3} className="location">
-          <TextField
-            style={{ marginRight: 10 }}
-            label="Onloc API's IP"
-            value={ip}
-            variant="outlined"
-            onChange={(value) => setIp(value.target.value)}
+      <Paper elevation={3} className="paper">
+        <DeviceSelector />
+        <FormControl>
+          <FormControlLabel
+            control={<Switch />}
+            label="Show all devices"
+            checked={showAll}
+            onChange={() => setShowAll(!showAll)}
           />
-          <DeviceSelector />
-          <FormControl>
-            <FormControlLabel
-              control={<Switch />}
-              label="Show all devices"
-              checked={showAll}
-              onChange={() => setShowAll(!showAll)}
-            />
-          </FormControl>
-        </Paper>
-      </Container>
+        </FormControl>
+      </Paper>
 
       <Location devices={devices} showAll={showAll} />
     </>
