@@ -1,6 +1,6 @@
 export async function getKnownDevices(ip) {
   try {
-    const response = await fetch(`${ip}/api/location/devices`, {
+    const response = await fetch(`${ip}/api/devices`, {
       method: "GET",
     });
 
