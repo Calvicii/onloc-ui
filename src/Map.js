@@ -10,7 +10,7 @@ import {
   Switch,
   FormControlLabel,
 } from "@mui/material";
-import { getKnownDevices, getLocations, getLocation } from "./Storage";
+import { getKnownDevices, getLocations, getLocation } from "./storage";
 
 function Map({ ip }) {
   const [deviceName, setDeviceName] = useState("");
