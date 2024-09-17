@@ -54,7 +54,7 @@ function Devices({ ip }) {
                 </ListItemIcon>
                 <ListItemText
                   primary={device.device}
-                  secondary={`Last seen: ${convertUnixToISO8601(
+                  secondary={`Last seen on ${convertUnixToISO8601(
                     device.timestamp
                   )}`}
                 />
