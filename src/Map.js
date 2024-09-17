@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   Container,
 } from "@mui/material";
+import { getKnownDevices, getLocations, getLocation } from "./Storage";
 
 function Map() {
   const [ip, setIp] = useState("http://localhost:8118");
@@ -20,86 +21,30 @@ function Map() {
   const [devices, setDevices] = useState([]);
   const [showAll, setShowAll] = useState(true);
 
-  async function getKnownDevices() {
-    try {
-      const response = await fetch(`${ip}/api/location/devices`, {
-        method: "GET",
-      });
-
-      if (!response.ok) {
-        setKnownDevices([]);
-        throw new Error("Failed to fetch devices");
-      }
-
-      const data = await response.json();
-      setKnownDevices(data);
-    } catch (error) {
-      setKnownDevices([]);
-      console.error(`Error fetching devices: ${error}`);
-    }
-  }
-
-  async function getLocations() {
-    try {
-      const response = await fetch(`${ip}/api/location/latest`, {
-        method: "GET",
-      });
-
-      if (!response.ok) {
-        setDevices([]);
-        throw new Error("Failed to fetch coordinates");
-      }
-
-      const data = await response.json();
-      setDevices(data);
-    } catch (error) {
-      setDevices([]);
-      console.error(`Error fetching coordinates: ${error}`);
-    }
-  }
-
-  async function getLocation() {
-    try {
-      const response = await fetch(`${ip}/api/location/latest/${deviceName}`, {
-        method: "GET",
-      });
-
-      if (!response.ok) {
-        setDevices([]);
-        throw new Error("Failed to fetch coordinates");
-      }
-
-      const data = await response.json();
-      setDevices([data]);
-    } catch (error) {
-      setDevices([]);
-      console.error(`Error fetching coordinates: ${error}`);
-    }
-  }
-
   useEffect(() => {
     let intervalId;
 
-    // Initial fetch and periodic updates
-    if (deviceName === null || showAll) {
-      getLocations();
-      getKnownDevices();
+    async function fetchData() {
+      if (deviceName === null || showAll) {
+        setDevices(await getLocations(ip));
+        setKnownDevices(await getKnownDevices(ip));
 
-      console.log(devices);
+        intervalId = setInterval(async () => {
+          setDevices(await getLocations(ip));
+          setKnownDevices(await getKnownDevices(ip));
+        }, 15000);
+      } else {
+        setDevices(await getLocation(ip, deviceName));
+        setKnownDevices(await getKnownDevices(ip));
 
-      intervalId = setInterval(() => {
-        getLocations();
-        getKnownDevices();
-      }, 15000);
-    } else {
-      getLocation();
-      getKnownDevices();
-
-      intervalId = setInterval(() => {
-        getLocation();
-        getKnownDevices();
-      }, 15000);
+        intervalId = setInterval(async () => {
+          setDevices(await getLocation(ip, deviceName));
+          setKnownDevices(await getKnownDevices(ip));
+        }, 15000);
+      }
     }
+
+    fetchData();
 
     // Cleanup interval on unmount
     return () => clearInterval(intervalId);
