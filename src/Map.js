@@ -1,5 +1,4 @@
-import "./App.css";
-import Location from "./Location";
+import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import {
   Paper,
@@ -10,13 +9,18 @@ import {
   Switch,
   FormControlLabel,
 } from "@mui/material";
+import "./App.css";
+import Location from "./Location";
 import { getKnownDevices, getLocations, getLocation } from "./storage";
 
 function Map({ ip }) {
-  const [deviceName, setDeviceName] = useState("");
+  const location = useLocation();
+  const { selectedDevice } = location.state || {};
+
+  const [deviceName, setDeviceName] = useState(selectedDevice || "");
   const [knownDevices, setKnownDevices] = useState([]);
   const [devices, setDevices] = useState([]);
-  const [showAll, setShowAll] = useState(true);
+  const [showAll, setShowAll] = useState(selectedDevice === undefined);
 
   useEffect(() => {
     let intervalId;
@@ -43,9 +47,8 @@ function Map({ ip }) {
 
     fetchData();
 
-    // Cleanup interval on unmount
     return () => clearInterval(intervalId);
-  }, [ip, deviceName, showAll]);
+  }, [ip, deviceName, showAll, selectedDevice]);
 
   function DeviceSelector() {
     return (
@@ -72,6 +75,7 @@ function Map({ ip }) {
   return (
     <>
       <h2>Map</h2>
+      <p>{selectedDevice}</p>
       <Paper elevation={3} className="paper" sx={{ display: "flex", alignItems: "center", width: "60vw" }}>
         <DeviceSelector />
         <FormControl>

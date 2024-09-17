@@ -12,7 +12,7 @@ function Settings({ ip, setIp }) {
   return (
     <>
       <h2>Settings</h2>
-      <Paper elevation={3} className="paper" sx={{ padding: 2, width: '60vw' }}>
+      <Paper elevation={3} className="paper" sx={{ padding: 2, width: "60vw" }}>
         <TextField
           label="Onloc API's IP"
           value={newIp}
@@ -20,7 +20,7 @@ function Settings({ ip, setIp }) {
           fullWidth
           sx={{ marginBottom: 2 }}
         />
-        <Button variant="contained" onClick={handleSave}>
+        <Button variant="contained" onClick={handleSave} disabled={ip === newIp}>
           Save
         </Button>
       </Paper>
