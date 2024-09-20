@@ -47,13 +47,13 @@ function Devices({ ip }) {
               <ListItemButton
                 component={Link}
                 to="/map"
-                state={{ selectedDevice: device.device }}
+                state={{ selectedDevice: device.deviceId }}
               >
                 <ListItemIcon>
                   <PhoneAndroidIcon />
                 </ListItemIcon>
                 <ListItemText
-                  primary={device.device}
+                  primary={device.deviceId}
                   secondary={`Last seen on ${convertUnixToISO8601(
                     device.timestamp
                   )}`}

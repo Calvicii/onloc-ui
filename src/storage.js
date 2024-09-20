@@ -18,7 +18,7 @@ export async function getKnownDevices(ip) {
 
 export async function getLocations(ip) {
   try {
-    const response = await fetch(`${ip}/api/location/latest`, {
+    const response = await fetch(`${ip}/api/locations?filter=latest`, {
       method: "GET",
     });
 
@@ -36,7 +36,7 @@ export async function getLocations(ip) {
 
 export async function getLocation(ip, deviceName) {
   try {
-    const response = await fetch(`${ip}/api/location/latest/${deviceName}`, {
+    const response = await fetch(`${ip}/api/locations?filter=latest&deviceId=${deviceName}`, {
       method: "GET",
     });
 

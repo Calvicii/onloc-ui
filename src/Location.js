@@ -25,7 +25,7 @@ function Location({ devices, showAll }) {
             position={[devices[0].coords.latitude, devices[0].coords.longitude]}
           >
             <Popup className="popup">
-              <p>{`${devices[0].device}\n(${devices[0].coords.latitude}, ${devices[0].coords.longitude})\n${convertUnixToISO8601(devices[0].timestamp)}`}</p>
+              <p>{`${devices[0].deviceId}\n(${devices[0].coords.latitude}, ${devices[0].coords.longitude})\n${convertUnixToISO8601(devices[0].timestamp)}`}</p>
             </Popup>
           </Marker>
           <MapUpdater
@@ -54,7 +54,7 @@ function Location({ devices, showAll }) {
               position={[device.coords.latitude, device.coords.longitude]}
             >
               <Popup>
-                <p>{`${device.device}\n(${device.coords.latitude}, ${device.coords.longitude})\n${convertUnixToISO8601(device.timestamp)}`}</p>
+                <p>{`${device.deviceId}\n(${device.coords.latitude}, ${device.coords.longitude})\n${convertUnixToISO8601(device.timestamp)}`}</p>
               </Popup>
             </Marker>
           ))}

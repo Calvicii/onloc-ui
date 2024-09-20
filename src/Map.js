@@ -8,7 +8,9 @@ import {
   FormControl,
   Switch,
   FormControlLabel,
+  IconButton,
 } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
 import "./App.css";
 import Location from "./Location";
 import { getKnownDevices, getLocations, getLocation } from "./storage";
@@ -60,7 +62,16 @@ function Map({ ip }) {
           labelId="device-selector-label"
           value={deviceName}
           disabled={showAll}
-          onChange={(e) => setDeviceName(e.target.value)} // Handle selection
+          onChange={(e) => setDeviceName(e.target.value)}
+          endAdornment={
+            <IconButton
+              onClick={() => setDeviceName("")}
+              disabled={showAll}
+              sx={{ display: deviceName === "" ? "none" : "" }}
+            >
+              <ClearIcon />
+            </IconButton>
+          }
         >
           {knownDevices.map((device) => (
             <MenuItem key={device} value={device}>
