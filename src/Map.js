@@ -67,9 +67,9 @@ function Map({ ip }) {
             <IconButton
               onClick={() => setDeviceName("")}
               disabled={showAll}
-              sx={{ display: deviceName === "" ? "none" : "" }}
+              sx={{ display: deviceName === "" ? "none" : "", right: 10 }}
             >
-              <ClearIcon />
+              <ClearIcon fontSize="small" />
             </IconButton>
           }
         >
