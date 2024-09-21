@@ -1,0 +1,9 @@
+.submit-link {
+    font-size: 10pt;
+    color: #90caf9;
+    text-decoration-color: #90caf944;
+}
+
+.submit-link:hover {
+    text-decoration-color: #90caf9;
+}

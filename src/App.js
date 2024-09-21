@@ -10,6 +10,8 @@ import "./App.css";
 import Map from "./Map";
 import Devices from "./Devices";
 import Settings from "./Settings";
+import Login from "./Login";
+import Register from "./Register";
 import { AppBar, Box, Button, IconButton } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 
@@ -72,6 +74,8 @@ function App() {
         <Route path="/map" element={<Map ip={ip} />} />
         <Route path="/devices" element={<Devices ip={ip} />} />
         <Route path="/settings" element={<Settings ip={ip} setIp={setIp} />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );
