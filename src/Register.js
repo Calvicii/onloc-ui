@@ -1,15 +1,83 @@
-import { TextField, Button, Box, FormControl, Typography } from "@mui/material";
+import {
+  TextField,
+  Box,
+  FormControl,
+  Typography,
+  Alert,
+  Collapse,
+  IconButton,
+} from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import CloseIcon from "@mui/icons-material/Close";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Auth.css";
 
-export default function Login() {
+export default function Register({ ip }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    setLoading(true);
+
+    e.preventDefault();
+
+    setUsernameError("");
+    setPasswordError("");
+    setConfirmPasswordError("");
+
+    let hasErrors = false;
+
+    if (username.length < 1) {
+      setUsernameError("The username field is required");
+      hasErrors = true;
+    }
+
+    if (password.length < 1) {
+      setPasswordError("The password field is required");
+      hasErrors = true;
+    }
+
+    if (password !== confirmPassword) {
+      setConfirmPasswordError("Passwords do not match");
+      hasErrors = true;
+    }
+
+    if (hasErrors) {
+      setLoading(false);
+      return;
+    }
+
+    const response = await fetch(`${ip}/api/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      setError(result.error || "Registration failed");
+    }
+
+    setLoading(false);
+  };
+
   return (
     <Box>
       <Box
         sx={{
           margin: "auto",
-          width: { xs: "80%", sm: "400px" }, // Responsive width for smaller screens
+          width: { xs: "80%", sm: "400px" },
         }}
       >
         <LockOutlinedIcon
@@ -38,51 +106,82 @@ export default function Login() {
         >
           Welcome user, please register to continue
         </Typography>
+        <form onSubmit={handleSubmit}>
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <TextField
+              label="Username"
+              name="username"
+              type="text"
+              required
+              fullWidth
+              error={usernameError !== "" || error !== ""}
+              helperText={usernameError}
+              variant="outlined"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </FormControl>
 
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <TextField
-            label="Username"
-            name="username"
-            type="text"
-            required
-            fullWidth
-            variant="outlined"
-          />
-        </FormControl>
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <TextField
+              label="Password"
+              name="password"
+              type="password"
+              required
+              fullWidth
+              error={passwordError !== "" || error !== ""}
+              helperText={passwordError}
+              variant="outlined"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </FormControl>
 
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <TextField
-            label="Password"
-            name="password"
-            type="password"
-            required
-            fullWidth
-            variant="outlined"
-          />
-        </FormControl>
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <TextField
+              label="Confirm Password"
+              name="confirm-password"
+              type="password"
+              required
+              fullWidth
+              error={confirmPasswordError !== "" || error !== ""}
+              helperText={confirmPasswordError}
+              variant="outlined"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </FormControl>
 
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <TextField
-            label="Confirm Password"
-            name="confirm-password"
-            type="password"
-            required
-            fullWidth
-            variant="outlined"
-          />
-        </FormControl>
+          <Collapse in={error !== ""}>
+            <Alert
+              variant="outlined"
+              severity="error"
+              sx={{ mb: 2 }}
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => setError("")}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+            >
+              {error}
+            </Alert>
+          </Collapse>
 
-        <FormControl fullWidth>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ py: 1.5 }}
-          >
-            Register
-          </Button>
-        </FormControl>
+          <FormControl fullWidth>
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ py: 1.5 }}
+              loading={loading}
+            >
+              Register
+            </LoadingButton>
+          </FormControl>
+        </form>
 
         <Box sx={{ textAlign: "left", mt: 2 }}>
           <Link to="/login" className="submit-link">

@@ -74,8 +74,8 @@ function App() {
         <Route path="/map" element={<Map ip={ip} />} />
         <Route path="/devices" element={<Devices ip={ip} />} />
         <Route path="/settings" element={<Settings ip={ip} setIp={setIp} />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login ip={ip} />} />
+        <Route path="/register" element={<Register ip={ip} />} />
       </Routes>
     </Router>
   );

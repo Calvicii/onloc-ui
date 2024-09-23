@@ -1,9 +1,15 @@
+import { useState } from "react";
 import { TextField, Button, Box, FormControl, Typography } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 
-export default function Login() {
+export default function Login({ ip }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
+  const navigate = useNavigate();
+
   return (
     <Box>
       <Box
@@ -29,7 +35,7 @@ export default function Login() {
           component="h1"
           sx={{ mb: 1, textAlign: "center" }}
         >
-          Login
+          Log in to Onloc
         </Typography>
         <Typography
           variant="p"
@@ -47,6 +53,7 @@ export default function Login() {
             required
             fullWidth
             variant="outlined"
+            error={errorMessage}
           />
         </FormControl>
 
@@ -58,6 +65,8 @@ export default function Login() {
             required
             fullWidth
             variant="outlined"
+            error={errorMessage}
+            helperText={errorMessage}
           />
         </FormControl>
 
