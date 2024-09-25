@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
-import "./Location.css";
-import { convertUnixToISO8601 } from "./utils";
+import "./../css/Location.css";
+import { convertUnixToISO8601 } from "../utilities/utils";
 import { Paper } from "@mui/material";
 
 function Location({ devices, showAll }) {

@@ -11,9 +11,14 @@ import {
   IconButton,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
-import "./App.css";
-import Location from "./Location";
-import { getKnownDevices, getLocations, getLocation } from "./storage";
+import "./css/App.css";
+import Location from "./components/Location";
+import {
+  getKnownDevices,
+  getLocations,
+  getLocation,
+} from "./utilities/storage";
+import AuthLayout from "./layouts/AuthLayout";
 
 function Map({ ip }) {
   const location = useLocation();
@@ -84,7 +89,7 @@ function Map({ ip }) {
   }
 
   return (
-    <>
+    <AuthLayout>
       <h2>Map</h2>
       <Paper
         elevation={3}
@@ -103,7 +108,7 @@ function Map({ ip }) {
       </Paper>
 
       <Location devices={devices} showAll={showAll} />
-    </>
+    </AuthLayout>
   );
 }
 

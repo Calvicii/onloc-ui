@@ -1,10 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  Navigate,
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Paper,
   List,
@@ -14,8 +8,9 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-import { getLocations } from "./storage";
-import { convertUnixToISO8601 } from "./utils";
+import { getLocations } from "./utilities/storage";
+import { convertUnixToISO8601 } from "./utilities/utils";
+import AuthLayout from "./layouts/AuthLayout";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 
 function Devices({ ip }) {
@@ -38,7 +33,7 @@ function Devices({ ip }) {
   }, []);
 
   return (
-    <>
+    <AuthLayout>
       <h2>Devices</h2>
       <Paper elevation={3} className="paper" sx={{ width: "60vw" }}>
         <List>
@@ -63,7 +58,7 @@ function Devices({ ip }) {
           ))}
         </List>
       </Paper>
-    </>
+    </AuthLayout>
   );
 }
 
