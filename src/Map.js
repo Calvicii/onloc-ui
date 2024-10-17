@@ -13,8 +13,7 @@ import {
 import ClearIcon from "@mui/icons-material/Clear";
 import "./css/App.css";
 import Location from "./components/Location";
-import { getLocations, getLocation } from "./utilities/storage";
-import { getDevices } from "./utilities/api";
+import { getDevices, getLocations, getLocation } from "./utilities/api";
 import AuthLayout from "./layouts/AuthLayout";
 
 function Map({ ip }) {

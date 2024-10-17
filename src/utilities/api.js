@@ -24,6 +24,45 @@ export async function validateToken(authInfo) {
   }
 }
 
+export async function getLocations(ip) {
+  try {
+    const response = await fetch(`${ip}/api/locations?filter=latest`, {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error fetching coordinates: ${error}`);
+    return [];
+  }
+}
+
+export async function getLocation(ip, deviceId) {
+  try {
+    const response = await fetch(
+      `${ip}/api/locations?filter=latest&deviceId=${deviceId}`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const data = await response.json();
+    return [data];
+  } catch (error) {
+    console.error(`Error fetching coordinates: ${error}`);
+    return [];
+  }
+}
+
 export async function addDevice(ownerId, name) {
   try {
     const response = await fetch(`${getApiIp()}/api/devices`, {
