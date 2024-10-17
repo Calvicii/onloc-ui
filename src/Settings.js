@@ -6,7 +6,7 @@ function Settings({ ip, setIp }) {
   const [newIp, setNewIp] = useState(ip);
 
   const handleSave = () => {
-    setIp(newIp); //
+    setIp(newIp);
     localStorage.setItem("apiIp", newIp);
   };
 

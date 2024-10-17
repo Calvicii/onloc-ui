@@ -1,0 +1,12 @@
+.devices-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.create-device-modal {
+    padding: 10px 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}

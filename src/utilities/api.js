@@ -23,3 +23,46 @@ export async function validateToken(authInfo) {
     return false;
   }
 }
+
+export async function addDevice(ownerId, name) {
+  try {
+    const response = await fetch(`${getApiIp()}/api/devices`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ownerId: ownerId,
+        name: name,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed adding a new device");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error adding a new device:", error);
+  }
+}
+
+export async function getDevices(ip) {
+  try {
+    const response = await fetch(`${ip}/api/devices`, {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error fetching devices: ${error}`);
+    return [];
+  }
+}

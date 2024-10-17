@@ -1,21 +1,3 @@
-export async function getKnownDevices(ip) {
-  try {
-    const response = await fetch(`${ip}/api/devices`, {
-      method: "GET",
-    });
-
-    if (!response.ok) {
-      return [];
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(`Error fetching devices: ${error}`);
-    return [];
-  }
-}
-
 export async function getLocations(ip) {
   try {
     const response = await fetch(`${ip}/api/locations?filter=latest`, {

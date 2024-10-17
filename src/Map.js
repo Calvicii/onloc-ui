@@ -13,11 +13,8 @@ import {
 import ClearIcon from "@mui/icons-material/Clear";
 import "./css/App.css";
 import Location from "./components/Location";
-import {
-  getKnownDevices,
-  getLocations,
-  getLocation,
-} from "./utilities/storage";
+import { getLocations, getLocation } from "./utilities/storage";
+import { getDevices } from "./utilities/api";
 import AuthLayout from "./layouts/AuthLayout";
 
 function Map({ ip }) {
@@ -35,19 +32,19 @@ function Map({ ip }) {
     async function fetchData() {
       if (deviceName === "" || showAll) {
         setDevices(await getLocations(ip));
-        setKnownDevices(await getKnownDevices(ip));
+        setKnownDevices(await getDevices(ip));
 
         intervalId = setInterval(async () => {
           setDevices(await getLocations(ip));
-          setKnownDevices(await getKnownDevices(ip));
+          setKnownDevices(await getDevices(ip));
         }, 15000);
       } else {
         setDevices(await getLocation(ip, deviceName));
-        setKnownDevices(await getKnownDevices(ip));
+        setKnownDevices(await getDevices(ip));
 
         intervalId = setInterval(async () => {
           setDevices(await getLocation(ip, deviceName));
-          setKnownDevices(await getKnownDevices(ip));
+          setKnownDevices(await getDevices(ip));
         }, 15000);
       }
     }
@@ -79,8 +76,8 @@ function Map({ ip }) {
           }
         >
           {knownDevices.map((device) => (
-            <MenuItem key={device} value={device}>
-              {device}
+            <MenuItem key={device.id} value={device.name}>
+              {device.name}
             </MenuItem>
           ))}
         </Select>
