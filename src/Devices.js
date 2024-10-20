@@ -10,6 +10,8 @@ import {
   Modal,
   TextField,
   Button,
+  IconButton,
+  Box,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useAuth } from "./context/AuthContext";
@@ -18,6 +20,7 @@ import { convertUnixToISO8601 } from "./utilities/utils";
 import AuthLayout from "./layouts/AuthLayout";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import "./css/Devices.css";
 
 function Devices({ ip }) {
@@ -25,7 +28,9 @@ function Devices({ ip }) {
 
   const [devices, setDevices] = useState([]);
   const [newDeviceName, setNewDeviceName] = useState("");
+  const [deviceToDelete, setDeviceToDelete] = useState({});
   const [createDeviceModalStatus, setCreateDeviceModalStatus] = useState(false);
+  const [deleteDeviceModalStatus, setDeleteDeviceModalStatus] = useState(false);
 
   function handleCreateDeviceModalOpen() {
     setCreateDeviceModalStatus(true);
@@ -34,6 +39,15 @@ function Devices({ ip }) {
   function handleCreateDeviceModalClose() {
     setCreateDeviceModalStatus(false);
     setNewDeviceName("");
+  }
+
+  function handleDeleteDeviceModalOpen(device) {
+    setDeviceToDelete(device);
+    setDeleteDeviceModalStatus(true);
+  }
+
+  function handleDeleteDeviceModalClose() {
+    setDeleteDeviceModalStatus(false);
   }
 
   useEffect(() => {
@@ -58,6 +72,11 @@ function Devices({ ip }) {
     setDevices(await getDevices(ip));
   }
 
+  async function deleteDevice() {
+    console.log("delete");
+    handleDeleteDeviceModalClose();
+  }
+
   return (
     <AuthLayout>
       <div className="devices-header">
@@ -77,6 +96,7 @@ function Devices({ ip }) {
             return (
               <ListItem key={device.id}>
                 <ListItemButton
+                  sx={{ borderRadius: 2 }}
                   component={Link}
                   to={`/map?deviceId=${device.id}`}
                 >
@@ -92,6 +112,12 @@ function Devices({ ip }) {
                     }
                   />
                 </ListItemButton>
+                <IconButton
+                  sx={{ ml: 1 }}
+                  onClick={() => handleDeleteDeviceModalOpen(device)}
+                >
+                  <DeleteIcon />
+                </IconButton>
               </ListItem>
             );
           })}
@@ -113,6 +139,27 @@ function Devices({ ip }) {
           <Button onClick={createDevice} sx={{ color: "white", mt: 2 }}>
             Add
           </Button>
+        </Paper>
+      </Modal>
+      <Modal
+        onClose={handleDeleteDeviceModalClose}
+        open={deleteDeviceModalStatus}
+        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+      >
+        <Paper className="create-device-modal">
+          <h3 style={{ marginBottom: 0 }}>Delete {deviceToDelete.name}?</h3>
+          <p style={{ marginTop: 0 }}>This action is irreversible</p>
+          <Box>
+            <Button
+              onClick={handleDeleteDeviceModalClose}
+              sx={{ color: "white", mt: 2, mr: 1 }}
+            >
+              Cancel
+            </Button>
+            <Button onClick={deleteDevice} color="error" sx={{ mt: 2 }}>
+              Delete
+            </Button>
+          </Box>
         </Paper>
       </Modal>
     </AuthLayout>

@@ -13,14 +13,16 @@ import {
 import ClearIcon from "@mui/icons-material/Clear";
 import "./css/App.css";
 import Location from "./components/Location";
-import { getDevices, getLocations, getLocation } from "./utilities/api";
+import { getDevices, getLocations } from "./utilities/api";
 import AuthLayout from "./layouts/AuthLayout";
 
 function Map({ ip }) {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-  const [selectedDeviceId, setSelectedDeviceId] = useState(queryParams.get('deviceId') || null);
+  // Adjusted to handle 0 correctly
+  const initialDeviceId = queryParams.get("deviceId");
+  const [selectedDeviceId, setSelectedDeviceId] = useState(initialDeviceId !== null ? parseInt(initialDeviceId) : null);
   const [knownDevices, setKnownDevices] = useState([]);
   const [locations, setLocations] = useState([]);
   const [showAll, setShowAll] = useState(selectedDeviceId === null);
@@ -51,14 +53,14 @@ function Map({ ip }) {
           id="device-selector"
           label="Device"
           labelId="device-selector-label"
-          value={selectedDeviceId !== null ? selectedDeviceId : ""}
+          value={selectedDeviceId !== null && knownDevices.length > 0 ? selectedDeviceId : ""}
           disabled={showAll}
-          onChange={(e) => setSelectedDeviceId(e.target.value)}
+          onChange={(e) => setSelectedDeviceId(e.target.value === "" ? null : e.target.value)}
           endAdornment={
             <IconButton
               onClick={() => setSelectedDeviceId(null)}
               disabled={showAll}
-              sx={{ display: selectedDeviceId === "" ? "none" : "", right: 10 }}
+              sx={{ display: selectedDeviceId === null ? "none" : "", right: 10 }}
             >
               <ClearIcon fontSize="small" />
             </IconButton>
