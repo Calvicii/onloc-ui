@@ -20,7 +20,6 @@ function Map({ ip }) {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-
   const [selectedDeviceId, setSelectedDeviceId] = useState(queryParams.get('deviceId') || null);
   const [knownDevices, setKnownDevices] = useState([]);
   const [locations, setLocations] = useState([]);

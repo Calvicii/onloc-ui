@@ -52,9 +52,10 @@ function Devices({ ip }) {
     return () => clearInterval(intervalId);
   }, []);
 
-  function createDevice() {
+  async function createDevice() {
     addDevice(user.id, newDeviceName);
     handleCreateDeviceModalClose();
+    setDevices(await getDevices(ip));
   }
 
   return (
