@@ -1,19 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
 import "./../css/Location.css";
 import { convertUnixToISO8601 } from "../utilities/utils";
 import { Paper } from "@mui/material";
 
-function Location({ devices, showAll }) {
-  if (devices[0] === undefined || devices[0] === null) {
+function Location({ selectedDeviceId, locations, showAll }) {
+  const [filteredLocations, setFilteredLocations] = useState([]);
+
+  useEffect(() => {
+    if (selectedDeviceId !== null) {
+      setFilteredLocations(
+        locations.filter((location) => location.deviceId === selectedDeviceId)
+      );
+    }
+  }, [selectedDeviceId, locations]);
+
+  if (locations[0] === undefined || locations[0] === null) {
     return null;
   }
 
-  if (!showAll && devices.length === 1) {
+  if (!showAll && selectedDeviceId !== null && filteredLocations.length > 0) {
     return (
       <Paper elevation={3} className="paper">
         <MapContainer
-          center={[devices[0].coords.latitude, devices[0].coords.longitude]}
+          center={[locations[0].coords.latitude, locations[0].coords.longitude]}
           zoom={16}
           style={{ height: "60vh", width: "100%", borderRadius: 10 }}
         >
@@ -22,25 +32,31 @@ function Location({ devices, showAll }) {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <Marker
-            position={[devices[0].coords.latitude, devices[0].coords.longitude]}
+            position={[
+              locations[0].coords.latitude,
+              locations[0].coords.longitude,
+            ]}
           >
             <Popup className="popup">
-              <p>{`${devices[0].deviceId}\n(${devices[0].coords.latitude}, ${devices[0].coords.longitude})\n${convertUnixToISO8601(devices[0].timestamp)}`}</p>
+              <p>{`${locations[0].deviceId}\n(${locations[0].coords.latitude}, ${locations[0].coords.longitude})\n${convertUnixToISO8601(locations[0].timestamp)}`}</p>
             </Popup>
           </Marker>
           <MapUpdater
-            coords={[devices[0].coords.latitude, devices[0].coords.longitude]}
+            coords={[
+              locations[0].coords.latitude,
+              locations[0].coords.longitude,
+            ]}
           />
         </MapContainer>
       </Paper>
     );
   }
 
-  if (devices.length >= 1 && showAll) {
+  if (showAll) {
     return (
       <Paper elevation={3} className="paper">
         <MapContainer
-          center={[devices[0].coords.latitude, devices[0].coords.longitude]}
+          center={[locations[0].coords.latitude, locations[0].coords.longitude]}
           zoom={16}
           style={{ height: "60vh", width: "100%", borderRadius: 10 }}
         >
@@ -48,13 +64,13 @@ function Location({ devices, showAll }) {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {devices.map((device, index) => (
+          {locations.map((location, index) => (
             <Marker
               key={index}
-              position={[device.coords.latitude, device.coords.longitude]}
+              position={[location.coords.latitude, location.coords.longitude]}
             >
               <Popup>
-                <p>{`${device.deviceId}\n(${device.coords.latitude}, ${device.coords.longitude})\n${convertUnixToISO8601(device.timestamp)}`}</p>
+                <p>{`${location.deviceId}\n(${location.coords.latitude}, ${location.coords.longitude})\n${convertUnixToISO8601(location.timestamp)}`}</p>
               </Popup>
             </Marker>
           ))}
@@ -66,7 +82,7 @@ function Location({ devices, showAll }) {
   return (
     <Paper elevation={3} className="paper">
       <MapContainer
-        center={[devices[0].coords.latitude, devices[0].coords.longitude]}
+        center={[locations[0].coords.latitude, locations[0].coords.longitude]}
         zoom={16}
         style={{ height: "60vh", width: "100%", borderRadius: 10 }}
       >

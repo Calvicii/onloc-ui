@@ -77,8 +77,7 @@ function Devices({ ip }) {
               <ListItem key={device.id}>
                 <ListItemButton
                   component={Link}
-                  to="/map"
-                  state={{ selectedDevice: device.name }}
+                  to={`/map?deviceId=${device.id}`}
                 >
                   <ListItemIcon>
                     <PhoneAndroidIcon />

@@ -20,9 +20,11 @@
   background-color: #333;
   margin: 0px;
   color: white;
+  border-radius: 16px;
 }
 
 .leaflet-popup-close-button {
+  margin: 4px;
   background-color: #333 !important;
   border-radius: 9999px;
 }
@@ -30,4 +32,8 @@
 .leaflet-popup-close-button:hover {
   color: white !important;
   background-color: #444 !important;
+}
+
+.leaflet-container {
+  background-color: transparent;
 }

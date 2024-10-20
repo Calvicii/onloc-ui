@@ -18,40 +18,31 @@ import AuthLayout from "./layouts/AuthLayout";
 
 function Map({ ip }) {
   const location = useLocation();
-  const { selectedDevice } = location.state || {};
+  const queryParams = new URLSearchParams(location.search);
 
-  const [deviceName, setDeviceName] = useState(selectedDevice || "");
+
+  const [selectedDeviceId, setSelectedDeviceId] = useState(queryParams.get('deviceId') || null);
   const [knownDevices, setKnownDevices] = useState([]);
-  const [devices, setDevices] = useState([]);
-  const [showAll, setShowAll] = useState(selectedDevice === undefined);
+  const [locations, setLocations] = useState([]);
+  const [showAll, setShowAll] = useState(selectedDeviceId === null);
 
   useEffect(() => {
     let intervalId;
 
     async function fetchData() {
-      if (deviceName === "" || showAll) {
-        setDevices(await getLocations(ip));
-        setKnownDevices(await getDevices(ip));
+      setLocations(await getLocations(ip));
+      setKnownDevices(await getDevices(ip));
 
-        intervalId = setInterval(async () => {
-          setDevices(await getLocations(ip));
-          setKnownDevices(await getDevices(ip));
-        }, 15000);
-      } else {
-        setDevices(await getLocation(ip, deviceName));
+      intervalId = setInterval(async () => {
+        setLocations(await getLocations(ip));
         setKnownDevices(await getDevices(ip));
-
-        intervalId = setInterval(async () => {
-          setDevices(await getLocation(ip, deviceName));
-          setKnownDevices(await getDevices(ip));
-        }, 15000);
-      }
+      }, 15000);
     }
 
     fetchData();
 
     return () => clearInterval(intervalId);
-  }, [ip, deviceName, showAll, selectedDevice]);
+  }, [ip, selectedDeviceId, showAll]);
 
   function DeviceSelector() {
     return (
@@ -61,21 +52,21 @@ function Map({ ip }) {
           id="device-selector"
           label="Device"
           labelId="device-selector-label"
-          value={deviceName}
+          value={selectedDeviceId !== null ? selectedDeviceId : ""}
           disabled={showAll}
-          onChange={(e) => setDeviceName(e.target.value)}
+          onChange={(e) => setSelectedDeviceId(e.target.value)}
           endAdornment={
             <IconButton
-              onClick={() => setDeviceName("")}
+              onClick={() => setSelectedDeviceId(null)}
               disabled={showAll}
-              sx={{ display: deviceName === "" ? "none" : "", right: 10 }}
+              sx={{ display: selectedDeviceId === "" ? "none" : "", right: 10 }}
             >
               <ClearIcon fontSize="small" />
             </IconButton>
           }
         >
           {knownDevices.map((device) => (
-            <MenuItem key={device.id} value={device.name}>
+            <MenuItem key={device.id} value={device.id}>
               {device.name}
             </MenuItem>
           ))}
@@ -103,7 +94,11 @@ function Map({ ip }) {
         </FormControl>
       </Paper>
 
-      <Location devices={devices} showAll={showAll} />
+      <Location
+        selectedDeviceId={selectedDeviceId}
+        locations={locations}
+        showAll={showAll}
+      />
     </AuthLayout>
   );
 }
